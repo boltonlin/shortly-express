@@ -83,9 +83,20 @@ app.post('/links',
     });
 });
 
+// TODO
+// app.delete('/links',
+// (req, res, next) => {
+
+// })
+
 /************************************************************/
 // Write your authentication routes here
 /************************************************************/
+
+app.get('/signup',
+(req, res) => {
+  res.render('signup');
+})
 
 app.post('/signup',
 (req, res) => {
