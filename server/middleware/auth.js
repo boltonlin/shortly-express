@@ -5,7 +5,7 @@ const _ = require('lodash');
 module.exports.createSession = (req, res, next) => {
   if (_.isEmpty(req.cookies)) {
     // no cookies, create session
-    _makeNewSessionAndCookies(req, res)
+    return _makeNewSessionAndCookies(req, res)
       .then(next);
   } else {
     // there are cookies, search sessions
@@ -57,6 +57,6 @@ let _makeNewSessionAndCookies = function (req, res) {
   .then(options => models.Sessions.get(options))
   .then(({ hash }) => {
     req.session = { hash };
-    res.cookies['shortlyid'] = { value: hash };
+    res.cookie('shortlyid', hash);
   });
 }
