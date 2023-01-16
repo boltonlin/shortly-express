@@ -18,23 +18,35 @@ app.use(Auth.createSession);
 
 app.get('/',
 (req, res) => {
-  res.render('index');
+  if (!models.Sessions.isLoggedIn(req.session)) {
+    res.redirect('/login');
+  } else {
+    res.render('index');
+  }
 });
 
 app.get('/create',
 (req, res) => {
-  res.render('index');
+  if (!models.Sessions.isLoggedIn(req.session)) {
+    res.redirect('/login');
+  } else {
+    res.render('index');
+  }
 });
 
 app.get('/links',
 (req, res, next) => {
-  models.Links.getAll()
-    .then(links => {
-      res.status(200).send(links);
-    })
-    .error(error => {
-      res.status(500).send(error);
-    });
+  if (!models.Sessions.isLoggedIn(req.session)) {
+    res.redirect('/login');
+  } else {
+    models.Links.getAll()
+      .then(links => {
+        res.status(200).send(links);
+      })
+      .error(error => {
+        res.status(500).send(error);
+      });
+  }
 });
 
 app.post('/links',
@@ -90,6 +102,11 @@ app.post('/signup',
     .catch(err => res.redirect(400, '/signup'));
 });
 
+app.get('/login',
+(req, res) => {
+  res.render('login');
+});
+
 app.post('/login',
 (req, res) => {
   const { username, password: attempt } = req.body;
@@ -116,6 +133,7 @@ app.get('/logout',
   models.Sessions.delete({ hash: req.session.hash })
   .then(() => {
       res.cookie('shortlyid', null);
+      res.redirect('/login');
       res.end();
     });
 });
