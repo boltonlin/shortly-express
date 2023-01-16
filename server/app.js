@@ -85,7 +85,26 @@ app.post('/signup',
     .catch(err => res.redirect(400, '/signup'));
 });
 
-
+app.post('/login',
+(req, res) => {
+  const { username, password: attempt } = req.body;
+  models.Users.get({username: username})
+    .then((result) => {
+      if (result) {
+        const { password, salt } = result;
+        if (models.Users.compare(attempt, password, salt)) {
+          // SUCCESSFUL LOGIN
+          res.redirect(200, '/');
+        } else {
+          // UNSUCCESSFUL LOGIN
+          res.redirect(401, '/login');
+        }
+      } else {
+        // USER DOESN'T EXIST
+        res.redirect(400, '/login');
+      }
+    }).catch(err => res.redirect(400, '/login'));
+});
 
 /************************************************************/
 // Handle the code parameter route last - if all other routes fail
