@@ -81,9 +81,10 @@ app.post('/signup',
 (req, res) => {
   const { username, password } = req.body;
   models.Users.create({ username, password })
-    .then((result) => res.redirect(201, '/'))
-    .catch((err) => res.redirect(400, '/signup'));
+    .then(result => res.redirect(201, '/'))
+    .catch(err => res.redirect(400, '/signup'));
 });
+
 
 
 /************************************************************/
