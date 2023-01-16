@@ -35,9 +35,6 @@ describe('', function() {
 
   beforeEach(function(done) {
 
-    /*************************************************************************************/
-    /* TODO: Update user and password if different than on your local machine            */
-    /*************************************************************************************/
     db = mysql.createConnection({
       user: 'student',
       password: 'student',
@@ -123,7 +120,7 @@ describe('', function() {
     });
   });
 
-  xdescribe('Account Creation:', function() {
+  describe('Account Creation:', function() {
 
     it('signup creates a new user record', function(done) {
       var options = {
